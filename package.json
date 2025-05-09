@@ -5,7 +5,7 @@
   "main": "dist/server.js",
   "scripts": {
     "start": "node dist/server.js",
-    "dev": "nodemon src/server.ts",
+    "dev": "nodemon --watch src --exec \"npm run build && node dist/server.js\"",
     "build": "tsc"
   },
   "repository": {
@@ -17,7 +17,9 @@
   "license": "ISC",
   "type": "module",
   "devDependencies": {
+    "@types/node": "^22.15.17",
     "nodemon": "^3.1.10",
+    "ts-node": "^10.9.2",
     "typescript": "^5.8.3"
   },
   "dependencies": {
