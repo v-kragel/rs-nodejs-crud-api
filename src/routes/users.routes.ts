@@ -1,11 +1,17 @@
 import { IncomingMessage, ServerResponse } from "node:http";
-import { handleGetUsers } from "../controllers/users.controller.js";
+import { getUsers, getSingleUser } from "../controllers/users.controller.js";
 
 export const handleUsersRoute = (req: IncomingMessage, res: ServerResponse) => {
-  if (req.method === "GET" && req.url === "/api/users") {
-    handleGetUsers(res);
-  } else {
-    res.writeHead(404);
-    res.end("Not Found");
+  const method = req.method;
+  const url = req.url || "";
+
+  if (url === "/api/users" && method === "GET") {
+    return getUsers(res);
+  }
+
+  const userIdMatch = url.match(/^\/api\/users\/([a-fA-F0-9\-]+)$/);
+
+  if (userIdMatch && method === "GET") {
+    return getSingleUser(req, res);
   }
 };
