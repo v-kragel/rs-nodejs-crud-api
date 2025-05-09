@@ -4,16 +4,14 @@ import { v4 as uuidv4 } from "uuid";
 export const users: User[] = [
   {
     id: uuidv4(),
-    firstName: "Vlad",
-    lastName: "Kragel",
+    username: "v-kragel",
     age: 27,
-    email: "vlad.kragel.main@gmail.com",
+    hobbies: ["gaming", "reading"],
   },
   {
     id: uuidv4(),
-    firstName: "Aliona",
-    lastName: "Romanenko",
+    username: "a-romanenko",
     age: 27,
-    email: "aliona.romanenko@gmail.com",
+    hobbies: ["skiing", "cycling"],
   },
 ];
