@@ -1,5 +1,11 @@
 import { IncomingMessage, ServerResponse } from "node:http";
-import { getAll, getById, create, remove } from "../services/users.service.js";
+import {
+  getAll,
+  getById,
+  create,
+  update,
+  remove,
+} from "../services/users.service.js";
 import { validate as isValidUUID } from "uuid";
 import { sendResponse } from "../utils/sendResponse.js";
 import { parseRequestBody } from "../utils/parseRequestBody.js";
@@ -61,6 +67,37 @@ export const createUser = async (req: IncomingMessage, res: ServerResponse) => {
   } catch (error) {
     sendResponse(res, 500, {
       message: `Failed to create a new user. Error: ${getErrorMessage(error)}`,
+    });
+  }
+};
+
+export const updateUser = async (
+  req: IncomingMessage,
+  res: ServerResponse,
+  userId: string
+) => {
+  try {
+    if (!userId || !isValidUUID(userId)) {
+      return sendResponse(res, 400, { message: "Invalid UUID format" });
+    }
+
+    let body;
+    try {
+      body = await parseRequestBody(req);
+    } catch (error) {
+      return sendResponse(res, 400, { message: "Invalid request body" });
+    }
+
+    const updatedUser = update(userId, body);
+
+    if (!updatedUser) {
+      return sendResponse(res, 404, { message: "User not found" });
+    }
+
+    return sendResponse(res, 200, updatedUser);
+  } catch (error) {
+    sendResponse(res, 500, {
+      message: `Failed to update the user. Error: ${getErrorMessage(error)}`,
     });
   }
 };

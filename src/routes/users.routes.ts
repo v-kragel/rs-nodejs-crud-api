@@ -4,6 +4,7 @@ import {
   getSingleUser,
   createUser,
   deleteUser,
+  updateUser,
 } from "../controllers/users.controller.js";
 import { sendResponse } from "../utils/sendResponse.js";
 
@@ -23,12 +24,20 @@ export const handleUsersRoute = (req: IncomingMessage, res: ServerResponse) => {
   const isUserIdRoute: boolean =
     urlParts.length === 3 && urlParts[0] === "api" && urlParts[1] === "users";
 
-  if (method === "GET" && isUserIdRoute) {
-    return getSingleUser(res, urlParts[2]);
-  }
+  if (isUserIdRoute) {
+    const userId = urlParts[2];
 
-  if (method === "DELETE" && isUserIdRoute) {
-    return deleteUser(res, urlParts[2]);
+    if (method === "GET") {
+      return getSingleUser(res, userId);
+    }
+
+    if (method === "PUT") {
+      return updateUser(req, res, userId);
+    }
+
+    if (method === "DELETE") {
+      return deleteUser(res, userId);
+    }
   }
 
   sendResponse(res, 404, { message: "Route not found" });

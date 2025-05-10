@@ -16,6 +16,16 @@ export const create = (data: Omit<User, "id">): User => {
   return newUser;
 };
 
+export const update = (userId: string, data: Partial<User>): User | null => {
+  const index = users.findIndex((u) => u.id === userId);
+
+  if (index === -1) return null;
+
+  users[index] = { ...users[index], ...data };
+
+  return users[index];
+};
+
 export const remove = (userId: string): boolean => {
   const index = users.findIndex((user) => user.id === userId);
 
